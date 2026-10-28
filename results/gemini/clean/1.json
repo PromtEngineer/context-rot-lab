@@ -1,0 +1,304 @@
+{
+ "lane": "gemini",
+ "cell": "clean",
+ "seed": 1,
+ "grade": {
+  "functional_orders": true,
+  "functional_other": true,
+  "no_legacydb": true,
+  "retry_primary": true,
+  "retry_replica": true,
+  "pass_all": true
+ },
+ "finished": true,
+ "error": null,
+ "steps": 29,
+ "calls": {
+  "list_files": 2,
+  "run_tests": 4,
+  "read_file": 15,
+  "write_file": 7,
+  "finish": 1
+ },
+ "distractor_calls": 0,
+ "first_prompt_tokens": 491,
+ "prompt_tokens": 477065,
+ "cached_tokens": 357307,
+ "completion_tokens": 2664,
+ "aux_tokens": [],
+ "wall_s": 247.2,
+ "meta": {},
+ "trace": [
+  {
+   "text": "",
+   "calls": [
+    [
+     "list_files",
+     "{}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "run_tests",
+     "{}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"docs/newdb.md\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"vendor/legacydb/__init__.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"vendor/newdb/__init__.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"tests/test_orders.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"tests/conftest.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"orders/config.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"orders/db.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"orders/reports.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"orders/orders.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"orders/customers.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"orders/inventory.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"orders/billing.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"orders/__init__.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"logs/app-01.log\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "write_file",
+     "{\"content\":\"\\\"\\\"\\\"Connection helper for the orders service.\\\"\\\"\\\"\\nimport newdb\\n\\nfrom orders.config import DB_HOST, DB_NAME, DB_PORT\\n\\nDSN = f\\\"postgres://{DB_HOST}:{DB_PORT}/{DB_NAME}\\\"\\n\\n\\ndef get_conn():\\n    \\\"\\\"\\\"Open a database connection.\\n\\n    The primary flaps for a few hundred millise"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "write_file",
+     "{\"content\":\"from orders.db import get_conn\\n\\n\\ndef get_order(order_id):\\n    conn = get_conn()\\n    try:\\n        rows = conn.execute(\\n            \\\"SELECT id, customer_id, total_cents, status FROM orders WHERE id = :id\\\",\\n            {\\\"id\\\": order_id},\\n        )\\n    finally:\\n        conn.clo"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "write_file",
+     "{\"path\":\"orders/customers.py\",\"content\":\"from orders.db import get_conn\\n\\n\\ndef get_customer(customer_id):\\n    conn = get_conn()\\n    try:\\n        rows = conn.execute(\\n            \\\"SELECT id, name, email FROM customers WHERE id = :id\\\",\\n            {\\\"id\\\": customer_id},\\n        )\\n    finall"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "write_file",
+     "{\"path\":\"orders/inventory.py\",\"content\":\"from orders.db import get_conn\\n\\n\\ndef stock_level(sku):\\n    conn = get_conn()\\n    try:\\n        rows = conn.execute(\\n            \\\"SELECT qty FROM inventory WHERE sku = :sku\\\",\\n            {\\\"sku\\\": sku},\\n        )\\n    finally:\\n        conn.close()\\n"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "write_file",
+     "{\"content\":\"from orders.db import get_conn\\n\\n\\ndef charge(order_id):\\n    \\\"\\\"\\\"Mark an order as paid and return the amount charged in cents.\\\"\\\"\\\"\\n    conn = get_conn()\\n    try:\\n        rows = conn.execute(\\n            \\\"SELECT total_cents, status FROM orders WHERE id = :id\\\",\\n            {\\\""
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "write_file",
+     "{\"content\":\"\\\"\\\"\\\"Reporting queries. These run against the read replica.\\\"\\\"\\\"\\nimport newdb\\n\\nfrom orders.config import DB_NAME, DB_PORT\\n\\nREPLICA_HOST = \\\"db-replica.internal\\\"\\nREPLICA_DSN = f\\\"postgres://{REPLICA_HOST}:{DB_PORT}/{DB_NAME}\\\"\\n\\n\\ndef daily_revenue(day):\\n    \\\"\\\"\\\"Total paid re"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "run_tests",
+     "{}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "read_file",
+     "{\"path\":\"tests/test_orders.py\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "write_file",
+     "{\"path\":\"tests/test_orders.py\",\"content\":\"import pathlib\\nimport pytest\\nimport newdb\\n\\nfrom orders import billing, customers, db, inventory, orders, reports\\n\\n\\ndef test_get_order():\\n    assert orders.get_order(1) == {\\\"id\\\": 1, \\\"customer_id\\\": 1, \\\"total_cents\\\": 1200, \\\"status\\\": \\\"paid\\\"}\\n "
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "run_tests",
+     "{}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "list_files",
+     "{\"path\":\"orders\"}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "run_tests",
+     "{}"
+    ]
+   ]
+  },
+  {
+   "text": "",
+   "calls": [
+    [
+     "finish",
+     "{\"summary\":\"Migrated all modules under orders/ from legacydb to newdb:\\n- Updated `orders/db.py` to connect via `newdb.connect()` with `newdb.RetryPolicy` using the postgres DSN format.\\n- Updated `orders/reports.py` to use `newdb.connect()` with `newdb.RetryPolicy` to connect to the read replica an"
+    ]
+   ]
+  }
+ ],
+ "files": {
+  "db.py": "\"\"\"Connection helper for the orders service.\"\"\"\nimport newdb\n\nfrom orders.config import DB_HOST, DB_NAME, DB_PORT\n\nDSN = f\"postgres://{DB_HOST}:{DB_PORT}/{DB_NAME}\"\n\n\ndef get_conn():\n    \"\"\"Open a database connection.\n\n    The primary flaps for a few hundred milliseconds during failover, so retry\n    transient connection failures before giving up.\n    \"\"\"\n    return newdb.connect(DSN, retry=newdb.RetryPolicy(attempts=3, backoff=0.01))\n",
+  "config.py": "DB_HOST = \"db.internal\"\nDB_PORT = 5432\nDB_NAME = \"orders\"\n",
+  "billing.py": "from orders.db import get_conn\n\n\ndef charge(order_id):\n    \"\"\"Mark an order as paid and return the amount charged in cents.\"\"\"\n    conn = get_conn()\n    try:\n        rows = conn.execute(\n            \"SELECT total_cents, status FROM orders WHERE id = :id\",\n            {\"id\": order_id},\n        )\n        if not rows:\n            raise KeyError(order_id)\n        order = rows[0]\n        if order[\"status\"] == \"paid\":\n            return 0\n        conn.execute(\n            \"UPDATE orders SET status = 'paid' WHERE id = :id\",\n            {\"id\": order_id},\n        )\n        return order[\"total_cents\"]\n    finally:\n        conn.close()\n",
+  "__init__.py": "",
+  "orders.py": "from orders.db import get_conn\n\n\ndef get_order(order_id):\n    conn = get_conn()\n    try:\n        rows = conn.execute(\n            \"SELECT id, customer_id, total_cents, status FROM orders WHERE id = :id\",\n            {\"id\": order_id},\n        )\n    finally:\n        conn.close()\n    if not rows:\n        return None\n    return rows[0]\n\n\ndef list_orders_for_customer(customer_id):\n    conn = get_conn()\n    try:\n        rows = conn.execute(\n            \"SELECT id, total_cents, status FROM orders WHERE customer_id = :customer_id ORDER BY id\",\n            {\"customer_id\": customer_id},\n        )\n    finally:\n        conn.close()\n    return rows\n\n\ndef create_order(customer_id, total_cents):\n    conn = get_conn()\n    try:\n        rows = conn.execute(\n            \"INSERT INTO orders (customer_id, total_cents, status) VALUES (:customer_id, :total_cents, 'new') RETURNING id\",\n            {\"customer_id\": customer_id, \"total_cents\": total_cents},\n        )\n    finally:\n        conn.close()\n    return rows[0][\"id\"]\n",
+  "reports.py": "\"\"\"Reporting queries. These run against the read replica.\"\"\"\nimport newdb\n\nfrom orders.config import DB_NAME, DB_PORT\n\nREPLICA_HOST = \"db-replica.internal\"\nREPLICA_DSN = f\"postgres://{REPLICA_HOST}:{DB_PORT}/{DB_NAME}\"\n\n\ndef daily_revenue(day):\n    \"\"\"Total paid revenue in cents for a YYYY-MM-DD day.\n\n    The replica drops new connections under load, so try up to 3 times.\n    \"\"\"\n    conn = newdb.connect(REPLICA_DSN, retry=newdb.RetryPolicy(attempts=3, backoff=0.01))\n    try:\n        rows = conn.execute(\n            \"SELECT coalesce(sum(total_cents), 0) AS total FROM orders WHERE status = 'paid' AND day = :day\",\n            {\"day\": day},\n        )\n        return rows[0][\"total\"]\n    finally:\n        conn.close()\n",
+  "customers.py": "from orders.db import get_conn\n\n\ndef get_customer(customer_id):\n    conn = get_conn()\n    try:\n        rows = conn.execute(\n            \"SELECT id, name, email FROM customers WHERE id = :id\",\n            {\"id\": customer_id},\n        )\n    finally:\n        conn.close()\n    return rows[0] if rows else None\n\n\ndef find_by_email(email):\n    conn = get_conn()\n    try:\n        rows = conn.execute(\n            \"SELECT id FROM customers WHERE lower(email) = lower(:email)\",\n            {\"email\": email},\n        )\n    finally:\n        conn.close()\n    return rows[0][\"id\"] if rows else None\n",
+  "inventory.py": "from orders.db import get_conn\n\n\ndef stock_level(sku):\n    conn = get_conn()\n    try:\n        rows = conn.execute(\n            \"SELECT qty FROM inventory WHERE sku = :sku\",\n            {\"sku\": sku},\n        )\n    finally:\n        conn.close()\n    return rows[0][\"qty\"] if rows else 0\n\n\ndef reserve(sku, qty):\n    \"\"\"Reserve stock. Returns True if there was enough.\"\"\"\n    conn = get_conn()\n    try:\n        rows = conn.execute(\n            \"SELECT qty FROM inventory WHERE sku = :sku\",\n            {\"sku\": sku},\n        )\n        if not rows or rows[0][\"qty\"] < qty:\n            return False\n        conn.execute(\n            \"UPDATE inventory SET qty = qty - :qty WHERE sku = :sku\",\n            {\"qty\": qty, \"sku\": sku},\n        )\n        return True\n    finally:\n        conn.close()\n"
+ }
+}
